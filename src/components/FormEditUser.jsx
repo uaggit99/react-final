@@ -20,6 +20,10 @@ export function FormEditUser({ id }) {
   const [password, setPassword] = useState(user?.password);
 
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regexpass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/;
+
+
+
 
   async function crearUsuario(e) {
     e.preventDefault();
@@ -34,6 +38,9 @@ export function FormEditUser({ id }) {
     if (!validar) {
       window.alert(" !Formato correo No valido !");
       return;
+    }
+    if(!regexpass.test(password)){
+      window-alert("formato pasword NO valido")
     }
 
     const resp = await fetch("http://localhost:8080/api/users", {
@@ -52,12 +59,20 @@ export function FormEditUser({ id }) {
   }
   async function editarUsuario(e){
     e.preventDefault();
+
+    if (!name || !email || !password) {
+      alert("Por favor, completa todos los campos.");
+      return;
+    }
     
     if(!regex.test(email)){
-      window.alert(" !Formato corroe no valido");
-      return;
+      window.alert(" !Formato correo no valido");
+      return;    }
 
+    if(!regexpass.test(password)){
+      window-alert("formato pasword NO valido")
     }
+
     const resp = await fetch(`http://localhost:8080/api/users/${user.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
